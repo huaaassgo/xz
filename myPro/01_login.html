@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<div>
+		用户名：<input type="text" name="" id="uname" ><span></span><br>
+		&nbsp;&nbsp;&nbsp;密码：<input type="passward" name="" id="upwd"><span></span><br>
+		<input type="button" name="" value="登陆" onclick="login()">
+	</div>
+	<div id="d1"></div>
+	<script type="text/javascript">
+		function login(){
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest;
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					d1.innerHTML=result;
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("post","/mypro/login",true);
+			//4.发送请求
+			var formdata="uname="+uname.value+"&upwd="+upwd.value;
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.send(formdata);
+		}
+	</script>
+</body>
+</html>

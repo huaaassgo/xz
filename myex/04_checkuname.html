@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	用户名：<input type="text" name="" id="uname" onblur="checkUname()"><span id="s1"></span><br>
+	&nbsp;&nbsp;&nbsp;密码：<input type="" name="" id="upwd"><br>
+	<input type="button" name="" value="注册">
+	<script type="text/javascript">
+		function checkUname(){
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest();
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					s1.innerHTML=result;
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("get","/demo/checkUname?uname="+uname.value,true)
+			//4.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

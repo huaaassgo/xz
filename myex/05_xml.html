@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<input type="button" name="" value="异步请求xml数据" onclick="getXML()">
+	<script type="text/javascript">
+		function getXML(){
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest();
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseXML; //改成XML
+					console.log(typeof(result));
+					console.log(result);
+					var students=result.getElementsByTagName("student");
+					var name=students[0].getElementsByTagName("name");
+					console.log(name[0].innerHTML);
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("get","student.xml",true);
+			//4.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

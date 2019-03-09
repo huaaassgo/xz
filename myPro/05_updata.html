@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body onload="queryuser()">
+	<div>
+		<form action="/mypro/updata" method="post">
+		&nbsp;&nbsp;&nbsp;用户名：<input type="text" name="uname" id="uname"><br>
+		电子邮箱：<input type="text" name="email" id="email"><br>
+		联系方式：<input type="text" name="phone" id="phone"><br>
+		用户姓名：<input type="text" name="user_name" id="user_name"><br>
+		用户性别：<input type="radio" name="gender" value="1" id="man">男
+		<input type="radio" name="gender" value="0" id="woman">女
+		<input type="radio" name="gender" value="lnul" id="unk">不详
+		<input type="hidden" name="uid" id="id">
+		<input type="submit" name="" value="修改">
+		</form>
+	</div>
+	<script type="text/javascript">
+		function queryuser(){
+			//获取url的参数uid
+			var urlParams=new URLSearchParams(location.search);
+			var uid=urlParams.get("uid");
+			id.value=uid;
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest;
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					if(result==0){
+						alert("编号不能为空");
+						return;
+					}else if(result==1){
+						alert('查无此人');
+						return;
+					}
+					var user=JSON.parse(result);
+					uname.value=user.uname;
+					email.value=user.email;
+					phone.value=user.phone;
+					user_name.value=user.user_name;
+					if(user.gender==1){
+						man.checked=true;
+					}else if(user.gender==0){
+						woman.checked=true;
+					}else{
+						unk.checked=true;
+					}
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("get","/mypro/queryuser?uid="+uid,true);
+			//4.发送请求
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

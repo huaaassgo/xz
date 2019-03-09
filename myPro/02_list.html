@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body onload="get_list()">
+	<table border="1px">
+		<thead>
+			<tr>
+				<th>登陆名称</th>
+				<th>电子邮箱</th>
+				<th>联系方式</th>
+				<th>用户姓名</th>
+				<th>用户性别</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id="t1">
+			
+		</tbody>
+	</table>
+	<script type="text/javascript">
+		function get_list(){
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest;
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					//json解析
+					var list=JSON.parse(result);
+					for(var i=0;i<list.length;i++){
+						if(list[i].user_name==null){
+							list[i].user_name="不详";
+						}
+						if(list[i].gender==null){
+							list[i].gender="不详";
+						}
+						t1.innerHTML+="<tr><td>"+list[i].uname+"</td><td>"+list[i].email+"</td><td>"+list[i].uphone+"</td><td>"+list[i].user_name+"</td><td>"+list[i].gender+"</td><td><a href='javascript:user_delete("+list[i].uid+")'>删除</a> <a href='06_updata.html?uid="+list[i].uid+"'>修改</a> </td></tr>"
+						//05是form表单修改，06是ajax修改
+					}
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("get","/mypro/userlist",true);
+			//4.发送请求
+			xhr.send(null);
+		}
+		function user_delete(uid){
+			var msg="确定要删除吗?"
+			if(confirm(msg)==true){
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest;
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					alert(result);
+					location.reload();//删除成功，刷新页面
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("get","/mypro/user_delete?uid="+uid,true);
+			//4.发送请求
+			xhr.send(null);
+			}else{
+				return false;
+			}
+		}
+	</script>
+</body>
+</html>

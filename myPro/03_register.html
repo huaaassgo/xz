@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<div>
+		用户名：<input type="text" name="" id="uname" onblur="checkuname()"><span id="unameMsg"></span><br>
+		密码：<input type="passward" name="" id="upwd1"><br>
+		密码验证：<input type="passward" name="" id="upwd2" onblur="checkupwd()"><span id="upwdMsg"></span><br>
+		邮箱：<input type="text" name="" id="email" ><br>
+		电话：<input type="text" name="" id="phone" ><br>
+		真实姓名：<input type="text" name="" id="user_name"><br>
+		性别：<select id="gender">
+			<option value="1">男</option>
+			<option value="0">女</option>
+			<option value="2">不详</option>
+		</select>
+		<input type="button" name="" value="注册" onclick="register()">
+	</div>
+	<script type="text/javascript">
+		var isRegisteruname=false;	//当isregister为false时，不允许注册
+		var isRegisterupwd=false;
+		function checkupwd(){
+			if(upwd1.value==""||upwd2.value==""){
+				upwdMsg.innerHTML="密码不能为空";
+			}
+			if(upwd1.value==upwd2.value){
+				isRegisterupwd=true;
+				upwdMsg.innerHTML="密码一致";
+
+			}else{
+				isRegisterupwd=false;
+				upwdMsg.innerHTML="密码不一致";
+			}
+		}
+		function checkuname(){
+			var xhr=new XMLHttpRequest;
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					if(result==1){
+						unameMsg.innerHTML="用户名已存在";
+						isRegisteruname=false;
+					}else if(result==0){
+						unameMsg.innerHTML="用户名可以使用";
+						isRegisteruname=true;
+					}
+				}
+			}
+			xhr.open("get","/mypro/checkuname?uname="+uname.value,true);
+			xhr.send(null);
+		}
+		function register(){
+			var xhr=new XMLHttpRequest;
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					if(result==1){
+						alert('注册成功');
+					}
+				}
+			}
+			xhr.open("post","/mypro/register",true);
+			var formdata="uname="+uname.value+"&upwd="+upwd2.value+"&email="+email.value+"&phone="+phone.value+"&user_name="+user_name.value+"&gender="+gender.value;
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.send(formdata);
+		}
+	</script>
+</body>
+</html>

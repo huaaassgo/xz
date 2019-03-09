@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<div>
+		<input type="text" name="" id="uid">
+		<input type="button" name="" value="删除" onclick="user_delete()">
+	</div>
+	<script type="text/javascript">
+		function user_delete(){
+			var msg="确定要删除吗?"
+			if(confirm(msg)==true){
+			//1.创建异步对象
+			var xhr=new XMLHttpRequest;
+			//2.绑定监听
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					alert(result);
+				}
+			}
+			//3.打开链接，创建请求
+			xhr.open("get","/mypro/user_delete?uid="+uid.value,true);
+			//4.发送请求
+			xhr.send(null);
+			}else{
+				return false;
+			}
+		}
+	</script>
+</body>
+</html>
